@@ -1,10 +1,10 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const _ = require('underscore');
 const Usuario = require('../models/usuario');
 const app = express();
 
-app.get('/usuario', function(req, res) {
+app.get('/obtener-usuario', function(req, res) {
 
     let desde = req.query.desde || 0;
     desde = Number(desde);
@@ -12,7 +12,7 @@ app.get('/usuario', function(req, res) {
     let limite = req.query.limite || 5;
     limite = Number(limite);
 
-    Usuario.find({}, 'nombre email role goole img')
+    Usuario.find({}, 'nombre email role  cedula')
         .limit(limite)
         .skip(desde)
         .exec((err, usuarios) => {
@@ -23,18 +23,18 @@ app.get('/usuario', function(req, res) {
                 });
             }
 
-            Usuario.count({}, (err, conteo) => {
-                res.json({
-                    ok: true,
-                    cuantos: conteo,
+            //Usuario.count({}, (err, conteo) => {
+                res.json(
+                   // ok: true,
+                    //cuantos: conteo,
                     usuarios
 
-                });
-            });
+                );
+           // });
         });
 });
 
-app.post('/usuario', function(req, res) {
+app.post('/insertar-usuario', function(req, res) {
 
     let body = req.body;
 
@@ -43,7 +43,7 @@ app.post('/usuario', function(req, res) {
         email: body.email,
         password: bcrypt.hashSync(body.password, 10),
         role: body.role,
-        img: body.img
+        cedula: body.cedula
     });
 
     usuario.save((err, usuarioDB) => {
@@ -54,26 +54,26 @@ app.post('/usuario', function(req, res) {
             });
         }
 
-        res.json({
-            ok: true,
-            usuario: usuarioDB
-        });
+        res.json(
+           
+            usuario
+        );
 
     });
 
 
 });
 
-app.put('/usuario/:id', function(req, res) {
+app.put('/actualizar-usuario/:id', function(req, res) {
     let id = req.params.id
-    let body = _.pick(req.body, ['nombre', 'email', 'img', 'role', 'estado']);
+    let body = _.pick(req.body, ['nombre', 'email', 'cedula', 'role',]);
 
     /* Solucion no eficiente 
     delete body.password;
     delete body.goole;
     */
 
-    Usuario.findByIdAndUpdate(id, body, { new: true, runValidators: true }, (err, usuarioDB) => {
+    Usuario.findByIdAndUpdate(id, body, { new: true, runValidators: false }, (err, usuarioDB) => {
         if (err) {
             return res.status(400).json({
                 ok: false,
@@ -88,7 +88,7 @@ app.put('/usuario/:id', function(req, res) {
     });
 });
 
-app.delete('/usuario/:id', function(req, res) {
+app.delete('/eliminar-usuario/:id', function(req, res) {
     let id = req.params.id;
 
     Usuario.findByIdAndRemove(id, (err, usuarioBorrado) => {
