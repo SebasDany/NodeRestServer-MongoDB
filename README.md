@@ -1,17 +1,22 @@
-# Servidor RESTful con NodeJS
+# Servidor RESTfull con NodeJS
 
 Recuerda instalar los paquetes
 
 ```
 npm install
 ```
-Para ejecutar el node server.js
+Para ejecutar la aplicacion  node server.js
 
 heroku
 
 metodos:
+
 obtener-usuario
+
 insertar-usuario
+
 actualizar-usuario
-eliminar-uusario
+
+eliminar-usuario
+
 https://rest-server-mongodb.herokuapp.com/+metodos

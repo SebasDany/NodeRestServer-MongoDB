@@ -11,6 +11,7 @@ process.env.PORT = process.env.PORT || 3000;
 // if (process.env.NODE_ENV === 'dev') {
 //     urlDB = 'mongodb://localhost:27017/cafe';
 // } else {
+    //conexion a la db mongoose atlas remoto 
 urlDB = 'mongodb+srv://cafe-user:sebastian1652@uusarios-9hqzh.mongodb.net/cafe'
     // }
 
