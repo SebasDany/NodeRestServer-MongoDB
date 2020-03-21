@@ -3,6 +3,30 @@ const bcrypt = require('bcryptjs');
 const _ = require('underscore');
 const Usuario = require('../models/usuario');
 const app = express();
+const path =require('path')
+
+const multer=require('multer')
+ 
+let storage=multer.diskStorage({
+    destination:( req, file,cb)=>{
+        cb(null,'../subidas')
+
+    },
+    filename:(req,file,cb)=>{
+        console.log(file)
+cb(null,file.fieldname+'-'+Date.now()+path.extname(file.originalname));
+
+    }
+
+})
+const upload=multer({storage})
+
+app.post('/subir',upload.single('file'),(req,res)=>{
+    //console.log( `Storage ${req.hostname}/${req.file.path}`)
+    //console.log(req.file)
+    
+})
+
 // metodo get que permite obtener los datos de la db
 app.get('/obtener-usuario', function(req, res) {
 //validacion, cuando se realic la consulata nos muestre todos los datos desde un determinado rango 
